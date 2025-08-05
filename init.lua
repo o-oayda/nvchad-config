@@ -37,4 +37,6 @@ vim.schedule(function()
   require "mappings"
 end)
 
-vim.o.shell = "/opt/homebrew/bin/fish"
+if vim.loop.os_uname().sysname == "Darwin" then
+  vim.o.shell = "/opt/homebrew/bin/fish"
+end
