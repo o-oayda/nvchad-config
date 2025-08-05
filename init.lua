@@ -36,3 +36,5 @@ require "configs.options"
 vim.schedule(function()
   require "mappings"
 end)
+
+vim.o.shell = "/opt/homebrew/bin/fish"
