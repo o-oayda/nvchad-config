@@ -3,6 +3,7 @@ require "nvchad.mappings"
 -- add yours here
 
 local map = vim.keymap.set
+local del = vim.keymap.del
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
@@ -32,5 +33,15 @@ map(
   "<cmd>Gitsigns preview_hunk_inline<cr>",
   {noremap = true, silent = true}
 )
+map(
+  "n",
+  "<leader>gu",
+  "<cmd>Gitsigns reset_hunk<cr>",
+  {noremap = true, silent = true}
+)
+-- del("n", "<M-i>")
+-- map({ "n", "t" }, "<C-i>", function()
+--   require("nvchad.term").toggle { pos = "float", id = "floatTerm" }
+-- end, { desc = "terminal toggle floating term" })
+-- -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 
--- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
