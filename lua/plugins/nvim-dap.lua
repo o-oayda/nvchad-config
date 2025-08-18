@@ -56,6 +56,7 @@ return {
           cwd = get_project_root(),
           console = "integratedTerminal",
           pythonPath = py_path,
+          justMyCode = false
         },
       }
 
