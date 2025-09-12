@@ -7,9 +7,9 @@ return {
   },
   config = function()
     require('nvim-treesitter.configs').setup {
-      ensure_installed = { "python", "lua", "bash" }, 
-      highlight = { enable = true },
-      indent = { enable = true },
+      ensure_installed = { "python", "lua", "bash" },
+      highlight = { enable = true, disable = { "latex" } },
+      indent = { enable = true, disable = { "latex" } },
 
       textobjects = {
         select = {

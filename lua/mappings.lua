@@ -39,6 +39,10 @@ map(
   "<cmd>Gitsigns reset_hunk<cr>",
   {noremap = true, silent = true}
 )
+
+-- latex
+vim.keymap.set("n", "<leader>tb", "<cmd>TexlabBuild<CR>", { desc = "make then view pdf" })
+vim.keymap.set("n", "<leader>tf", "<cmd>TexlabForward<CR>", { desc = "go to in pdf" })
 -- del("n", "<M-i>")
 -- map({ "n", "t" }, "<C-i>", function()
 --   require("nvchad.term").toggle { pos = "float", id = "floatTerm" }
