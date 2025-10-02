@@ -10,10 +10,9 @@ return {
     },
     config = function()
       local dap = require("dap")
+      local dap_args = require("utils.dap_args")
       local dapui = require("dapui")
       local dap_python = require("dap-python")
-      local util = require("lspconfig.util")
-
       local util = require("lspconfig.util")
 
       local function get_project_root()
@@ -58,6 +57,14 @@ return {
           pythonPath = py_path,
           justMyCode = false
         },
+        {
+          type = 'python',
+          request = 'launch',
+          name = 'Launch file with arguments (prompt)',
+          program = '${file}',
+          args = dap_args.prompt_args,
+          justMyCode = false
+        },
       }
 
       dapui.setup()
@@ -68,6 +75,9 @@ return {
       vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "DiagnosticSignError" })
       vim.fn.sign_define("DapStopped", { text = "", texthl = "DiagnosticSignWarn", linehl = "Visual" })
 
+
+      -- Stop on both raised and uncaught exceptions
+      dap.set_exception_breakpoints({'raised', 'uncaught'})
       dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
       dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
       dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
