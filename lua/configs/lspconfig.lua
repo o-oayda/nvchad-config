@@ -51,8 +51,17 @@ lspconfig.texlab.setup {
         executable = "bash",
         args = {
           "-lc",
-          -- 1-liner: walk up to a dir containing Makefile, then run `make all`
-          'dir="$(dirname "%f")"; while [ "$dir" != "/" ] && [ ! -f "$dir/Makefile" ]; do dir="$(dirname "$dir")"; done; [ -f "$dir/Makefile" ] || { echo "Makefile not found"; exit 1; }; cd "$dir" && make all',
+          [[
+          src="%f";
+          dir="$(dirname "$src")";
+          probe="$dir"; found="";
+          while [ "$probe" != "/" ]; do [ -f "$probe/Makefile" ] && { found="$probe"; break; }; probe="$(dirname "$probe")"; done;
+          if [ -n "$found" ]; then
+            echo "texlab-build: Makefile at $found"; cd "$found" && make all;
+          else
+            echo "texlab-build: no Makefile; latexmk fallback"; cd "$dir" && latexmk -pdf -interaction=nonstopmode -synctex=1 -file-line-error "$(basename "$src")";
+          fi
+          ]]
         },
         onSave = false,             -- build on save (or set false if you prefer :TexlabBuild)
         forwardSearchAfter = true, -- jump to the PDF after a successful build
