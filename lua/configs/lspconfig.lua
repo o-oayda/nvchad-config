@@ -4,6 +4,22 @@ local capabilities = require("nvchad.configs.lspconfig").capabilities
 
 require("nvchad.configs.lspconfig").defaults()
 
+-- Detect OS for forward search
+local uname = vim.loop.os_uname().sysname
+local forward_search_executable
+local forward_search_args
+
+if uname == "Darwin" then
+  forward_search_executable = "/Applications/Skim.app/Contents/SharedSupport/displayline"
+  forward_search_args = { "-r", "-g", "%l", "%p", "%f" }
+elseif uname == "Linux" then
+  forward_search_executable = "sioyek"
+  forward_search_args = { "--forward-search-file", "%f", "--forward-search-line", "%l", "%p" }
+else
+  forward_search_executable = nil
+  forward_search_args = {}
+end
+
 -- JavaScript/TypeScript LSP with global type checking for JS
 lspconfig.ts_ls.setup {
   on_attach = on_attach,
@@ -28,6 +44,7 @@ lspconfig.texlab.setup {
   on_attach = on_attach,
   capabilities = capabilities,
   settings = {
+    trace = { server = 'verbose' },
     texlab = {
       -- Robust: find nearest Makefile up the tree, cd there, run `make all`
       build = {
@@ -42,37 +59,16 @@ lspconfig.texlab.setup {
       },
       -- Forward search (change viewer if not on Linux/zathura)
       forwardSearch = {
-        executable = "/Applications/Skim.app/Contents/SharedSupport/displayline",
-        args = { "-r", "-g", "%l", "%p", "%f" }, -- add "-g" to avoid focus steal
+        executable = forward_search_executable,
+        args = forward_search_args,
       }
       -- If you ever move outputs to a folder (e.g. out/), uncomment:
       -- auxDirectory = "out",
-      -- logDirectory = "out",
       -- pdfDirectory = "out",
     },
+  logDirectory = "out",
   },
 }
--- lspconfig.texlab.setup {
---   settings = {
---     texlab = {
---       auxDirectory = ".",
---       bibtexFormatter = "texlab",
---       build = {
---         executable = "latexmk",
---         args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
---         onSave = false,               -- auto build on save
---         forwardSearchAfter = true,   -- jump to PDF after build
---       },
---       forwardSearch = {
---         executable = "/Applications/Skim.app/Contents/SharedSupport/displayline",
---         args = { "%l", "%p", "%f" },
---       },
---       chktex = { onOpenAndSave = true, onEdit = false },
---       latexFormatter = "latexindent",
---       latexindent = { modifyLineBreaks = false },
---     },
---   },
--- }
 
 -- Enable your LSP servers
 local servers = { "html", "cssls", "pyright" }
