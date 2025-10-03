@@ -9,10 +9,7 @@ local uname = vim.loop.os_uname().sysname
 local forward_search_executable
 local forward_search_args
 
-if uname == "Darwin" then
-  forward_search_executable = "/Applications/Skim.app/Contents/SharedSupport/displayline"
-  forward_search_args = { "-r", "-g", "%l", "%p", "%f" }
-elseif uname == "Linux" then
+if (uname == "Darwin") or (uname == "Linux") then
   forward_search_executable = "sioyek"
   forward_search_args = { "--forward-search-file", "%f", "--forward-search-line", "%l", "%p" }
 else
