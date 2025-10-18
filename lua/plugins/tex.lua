@@ -10,7 +10,7 @@ return {
       vim.g.vimtex_fold_enabled = 1
 
       -- quality-of-life
-      vim.o.foldlevelstart = 99            -- start unfolded
+      vim.o.foldlevelstart = -1
       vim.o.foldenable = true              -- ensure folding is on
       vim.o.foldcolumn = "1"               -- see a gutter for folds (optional)
 
@@ -26,4 +26,15 @@ return {
       -- usually nothing needed here; init was the important part
     end,
   },
+  {
+    "o-oayda/luasnip-latex-snippets.nvim",
+    lazy = false, -- don't lazy load https://github.com/iurimateus/luasnip-latex-snippets.nvim/discussions/18
+    -- vimtex isn't required if using treesitter
+    dependencies = { "L3MON4D3/LuaSnip", "lervag/vimtex" },
+    config = function()
+      require'luasnip-latex-snippets'.setup()
+      -- or setup({ use_treesitter = true })
+      require("luasnip").config.setup { enable_autosnippets = true }
+    end,
+  }
 }
