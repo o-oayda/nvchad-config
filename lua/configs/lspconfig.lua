@@ -18,7 +18,7 @@ else
 end
 
 -- JavaScript/TypeScript LSP with global type checking for JS
-lspconfig.ts_ls.setup {
+vim.lsp.config("ts_ls", {
   on_attach = on_attach,
   capabilities = capabilities,
   settings = {
@@ -35,7 +35,7 @@ lspconfig.ts_ls.setup {
       suggest = { completeFunctionCalls = true },
     },
   },
-}
+})
 
 lspconfig.texlab.setup {
   on_attach = on_attach,

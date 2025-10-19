@@ -33,6 +33,13 @@ return {
   --   })
   -- end
   },
+  {
+    "windwp/nvim-autopairs",
+    lazy = false,
+    config = function()
+      require "configs.autopairs"
+    end,
+  }
   -- test new blink
   -- { import = "nvchad.blink.lazyspec" },
 
