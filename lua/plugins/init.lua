@@ -35,9 +35,23 @@ return {
   },
   {
     "windwp/nvim-autopairs",
-    lazy = false,
-    config = function()
-      require "configs.autopairs"
+    event = "InsertEnter",
+    dependencies = { "hrsh7th/nvim-cmp" },
+    opts = {
+      fast_wrap = {},
+      disable_filetype = { "TelescopePrompt", "vim" },
+    },
+    config = function(_, opts)
+      local npairs = require("nvim-autopairs")
+      npairs.setup(opts)
+
+      local ok, cmp = pcall(require, "cmp")
+      if ok then
+        local cmp_autopairs = require "nvim-autopairs.completion.cmp"
+        cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+      end
+
+      require("configs.autopairs").add_latex_rules()
     end,
   }
   -- test new blink
