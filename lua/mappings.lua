@@ -40,12 +40,11 @@ map(
   {noremap = true, silent = true}
 )
 
--- latex
-vim.keymap.set("n", "<leader>tb", "<cmd>TexlabBuild<CR>", { desc = "make then view pdf" })
-vim.keymap.set("n", "<leader>tf", "<cmd>TexlabForward<CR>", { desc = "go to in pdf" })
+-- texlab user commands moved to `:LspTexlab*` in vim.lsp.config
+vim.keymap.set("n", "<leader>tb", "<cmd>LspTexlabBuild<CR>", { desc = "make then view pdf" })
+vim.keymap.set("n", "<leader>tf", "<cmd>LspTexlabForward<CR>", { desc = "go to in pdf" })
 -- del("n", "<M-i>")
 -- map({ "n", "t" }, "<C-i>", function()
 --   require("nvchad.term").toggle { pos = "float", id = "floatTerm" }
 -- end, { desc = "terminal toggle floating term" })
 -- -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
-

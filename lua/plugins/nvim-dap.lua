@@ -13,23 +13,19 @@ return {
       local dap_args = require("utils.dap_args")
       local dapui = require("dapui")
       local dap_python = require("dap-python")
-      local util = require("lspconfig.util")
-
       local function get_project_root()
         local filepath = vim.fn.expand("%:p")
         if filepath == "" or filepath == nil then
-          -- No file loaded, fallback to cwd
-          local cwd = vim.fn.getcwd()
-          return cwd
+          return vim.fn.getcwd()
         end
 
-        local root = util.root_pattern(".git")(filepath)
-        if root then
-          return root
-        else
-          local cwd = vim.fn.getcwd()
-          return cwd
+        local start = vim.fs.dirname(filepath)
+        local git_dir = vim.fs.find(".git", { path = start, upward = true })[1]
+        if git_dir then
+          return vim.fs.dirname(git_dir)
         end
+
+        return vim.fn.getcwd()
       end
       
       local function get_python_path()

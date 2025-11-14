@@ -1,8 +1,12 @@
-local lspconfig = require "lspconfig"
-local on_attach = require("nvchad.configs.lspconfig").on_attach
+local nv_on_attach = require("nvchad.configs.lspconfig").on_attach
 local capabilities = require("nvchad.configs.lspconfig").capabilities
 
 require("nvchad.configs.lspconfig").defaults()
+
+local texlab_defaults = vim.deepcopy(vim.lsp.config["texlab"] or {})
+local texlab_builtin_on_attach = texlab_defaults.on_attach
+-- NOTE: texlab ships its own on_attach that registers :LspTexlab* commands.
+--       Keep it around and run NvChad's handler afterwards so our keymaps work.
 
 -- Detect OS for forward search
 local uname = vim.loop.os_uname().sysname
@@ -19,7 +23,7 @@ end
 
 -- JavaScript/TypeScript LSP with global type checking for JS
 vim.lsp.config("ts_ls", {
-  on_attach = on_attach,
+  on_attach = nv_on_attach,
   capabilities = capabilities,
   settings = {
     javascript = {
@@ -37,8 +41,13 @@ vim.lsp.config("ts_ls", {
   },
 })
 
-lspconfig.texlab.setup {
-  on_attach = on_attach,
+local texlab_config = vim.tbl_deep_extend("force", {}, texlab_defaults, {
+  on_attach = function(client, bufnr)
+    if texlab_builtin_on_attach then
+      texlab_builtin_on_attach(client, bufnr)
+    end
+    nv_on_attach(client, bufnr)
+  end,
   capabilities = capabilities,
   settings = {
     trace = { server = 'verbose' },
@@ -60,7 +69,7 @@ lspconfig.texlab.setup {
           fi
           ]]
         },
-        onSave = false,             -- build on save (or set false if you prefer :TexlabBuild)
+        onSave = false,             -- build on save (or set false if you prefer :LspTexlabBuild)
         forwardSearchAfter = true, -- jump to the PDF after a successful build
       },
       -- Forward search (change viewer if not on Linux/zathura)
@@ -74,14 +83,9 @@ lspconfig.texlab.setup {
     },
   logDirectory = "out",
   },
-}
+})
 
--- lspconfig.clangd.setup {
---   on_attach = on_attach,
---   capabilities = capabilities,
---   settings = {},
--- }
---
--- Enable your LSP servers
-local servers = { "html", "cssls", "pyright", "clangd" }
+vim.lsp.config("texlab", texlab_config)
+
+local servers = { "html", "cssls", "pyright", "clangd", "ts_ls", "texlab" }
 vim.lsp.enable(servers)
