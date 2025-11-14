@@ -76,6 +76,12 @@ lspconfig.texlab.setup {
   },
 }
 
+-- lspconfig.clangd.setup {
+--   on_attach = on_attach,
+--   capabilities = capabilities,
+--   settings = {},
+-- }
+--
 -- Enable your LSP servers
-local servers = { "html", "cssls", "pyright" }
+local servers = { "html", "cssls", "pyright", "clangd" }
 vim.lsp.enable(servers)

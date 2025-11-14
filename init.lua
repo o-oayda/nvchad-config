@@ -40,6 +40,7 @@ dofile(vim.g.base46_cache .. "statusline")
 require "options"
 require "autocmds"
 require "configs.options"
+require "lsp_installer"
 
 vim.schedule(function()
   require "mappings"
