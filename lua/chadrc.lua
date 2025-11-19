@@ -14,6 +14,17 @@ M.base46 = {
 	-- },
 }
 
+M.term = {
+	sizes = {
+		vsp = 0.4,
+		["bo vsp"] = 0.4,
+	},
+	float = { -- attributes of floating toggleable term
+		col = 0.1,
+		width = 0.8,
+	},
+}
+
 -- M.nvdash = { load_on_startup = true }
 -- M.ui = {
 --       tabufline = {
