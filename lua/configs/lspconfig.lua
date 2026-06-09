@@ -87,5 +87,7 @@ local texlab_config = vim.tbl_deep_extend("force", {}, texlab_defaults, {
 
 vim.lsp.config("texlab", texlab_config)
 
-local servers = { "pyright", "clangd", "ts_ls", "texlab" }
+vim.lsp.config("yaml-language-server", {})
+
+local servers = { "pyright", "clangd", "ts_ls", "texlab", "yaml-language-server" }
 vim.lsp.enable(servers)

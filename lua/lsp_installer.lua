@@ -10,6 +10,7 @@ local ensure_installed = {
   "bash-language-server",
   "pyright",
   "clang-format",
+  "yaml-language-server"
 }
 
 -- Install missing ones automatically
